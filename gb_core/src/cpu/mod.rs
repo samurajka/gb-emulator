@@ -1,5 +1,5 @@
 #[derive(Copy, Clone, PartialEq)]
-pub enum Regs {
+pub enum Register {
     A,
     B,
     C,
@@ -11,7 +11,7 @@ pub enum Regs {
 }
 
 #[derive(Copy, Clone)]
-pub enum Regs16 {
+pub enum RegisterPair {
     AF,
     BC,
     DE,
@@ -19,7 +19,7 @@ pub enum Regs16 {
     SP
 }
 
-pub enum Flags {
+pub enum Flag {
     Z,
     N,
     H,
@@ -54,4 +54,31 @@ impl Cpu {
             l: 0x00,
         }
     }
+
+    pub fn get_register(&self, r: Register) -> u8 {
+        match r {
+            Register::A => { self.a },
+            Register::B => { self.b },
+            Register::C => { self.c },
+            Register::D => { self.d },
+            Register::E => { self.e },
+            Register::F => { self.f },
+            Register::H => { self.h },
+            Register::L => { self.l },
+        }
+    }
+
+    pub fn set_register(&mut self, r: Register, value: u8) {
+        match r {
+            Register::A => { self.a = value },
+            Register::B => { self.b = value },
+            Register::C => { self.c = value },
+            Register::D => { self.d = value },
+            Register::E => { self.e = value },
+            Register::F => { self.f = value & 0xF0},
+            Register::H => { self.h = value },
+            Register::L => { self.l = value },
+        }
+    }
+
 }
