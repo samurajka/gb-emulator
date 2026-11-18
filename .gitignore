@@ -1,0 +1,8 @@
+desktop/target
+desktop/Cargo.lock
+
+gb_core/target
+gb_core/Cargo.lock
+
+wasm/target
+wasm/Cargo.lock
