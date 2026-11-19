@@ -1,3 +1,5 @@
+use crate::utils::*;
+
 #[derive(Copy, Clone, PartialEq)]
 pub enum Register {
     A,
@@ -27,8 +29,8 @@ pub enum Flag {
 }
 
 pub struct Cpu {
-    pc: u16,
-    sp: u16,
+    pc: u16, // program counter
+    sp: u16, // stack pointer
     a: u8,
     b: u8,
     c: u8,
@@ -78,6 +80,68 @@ impl Cpu {
             Register::F => { self.f = value & 0xF0},
             Register::H => { self.h = value },
             Register::L => { self.l = value },
+        }
+    }
+
+    pub fn get_register_pair(&self, rp: RegisterPair) -> u16 {
+        match rp {
+            RegisterPair::AF => { merge_bytes(self.a, self.f) },
+            RegisterPair::BC => { merge_bytes(self.b, self.c) },
+            RegisterPair::DE => { merge_bytes(self.d, self.e) },
+            RegisterPair::HL => { merge_bytes(self.h, self.l) },
+            RegisterPair::SP => { self.sp },
+        }
+    }
+
+    pub fn set_register_pair(&mut self, rp: RegisterPair, value: u16) {
+        let high = value.high_byte();
+        let low = value.low_byte();
+
+        match rp {
+            RegisterPair::AF => {
+                self.set_register(Register::A, high);
+                self.set_register(Register::F, low);
+            },
+            RegisterPair::BC => {
+                self.set_register(Register::B, high);
+                self.set_register(Register::C, low);
+            },
+            RegisterPair::DE => {
+                self.set_register(Register::D, high);
+                self.set_register(Register::E, low);
+            },
+            RegisterPair::HL => {
+                self.set_register(Register::H, high);
+                self.set_register(Register::L, low);
+            },
+            RegisterPair::SP => { self.sp = value },
+        }
+    }
+
+    pub fn get_flag(&self, f: Flag) -> bool {
+        match f {
+            Flag::Z => { (self.f & 0b1000_0000) != 0 },
+            Flag::N => { (self.f & 0b0100_0000) != 0 },
+            Flag::H => { (self.f & 0b0010_0000) != 0 },
+            Flag::C => { (self.f & 0b0001_0000) != 0 },
+        }
+    }
+
+    pub fn set_flag(&mut self, f: Flag, value: bool) {
+        if value {
+            match f {
+                Flag::Z => { self.f |= 0b1000_0000 },
+                Flag::N => { self.f |= 0b0100_0000 },
+                Flag::H => { self.f |= 0b0010_0000 },
+                Flag::C => { self.f |= 0b0001_0000 },
+            }
+        } else {
+            match f {
+                Flag::Z => { self.f &= 0b0111_0000 },
+                Flag::N => { self.f &= 0b1011_0000 },
+                Flag::H => { self.f &= 0b1101_0000 },
+                Flag::C => { self.f &= 0b1110_0000 },
+            }
         }
     }
 
