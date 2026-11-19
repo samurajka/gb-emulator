@@ -1,3 +1,5 @@
+pub mod opcodes;
+
 use crate::utils::*;
 
 #[derive(Copy, Clone, PartialEq)]
@@ -143,6 +145,27 @@ impl Cpu {
                 Flag::C => { self.f &= 0b1110_0000 },
             }
         }
+    }
+
+    pub fn fetch(&mut self) -> u8 {
+        let value = self.read_ram(self.pc);
+        self.pc += 1;
+        value
+    }
+
+    pub fn fetch_u16(&mut self) -> u16 {
+        let low = self.fetch();
+        let high = self.fetch();
+        let value = merge_bytes(high, low);
+        value
+    }
+
+    pub fn read_ram(&self, address: u16) -> u8 {
+        todo!();
+    }
+
+    pub fn write_ram(&mut self, address: u16, value: u8) {
+        todo!();
     }
 
 }
