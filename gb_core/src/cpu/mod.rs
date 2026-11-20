@@ -168,4 +168,16 @@ impl Cpu {
         todo!();
     }
 
+    pub fn decrement_register_pair(&mut self, rp: RegisterPair) {
+        let value = self.get_register_pair(rp);
+        let decremented = value.wrapping_sub(1);
+        self.set_register_pair(rp, decremented);
+    }
+
+    pub fn incremented_register_pair(&mut self, rp: RegisterPair) {
+        let value = self.get_register_pair(rp);
+        let incremented = value.wrapping_add(1);
+        self.set_register_pair(rp, incremented);
+    }
+
 }
