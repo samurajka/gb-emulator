@@ -12,6 +12,7 @@ pub enum Register {
     F,
     H,
     L,
+    HL, // this is not a single register but we will use it in get_register() and set_register(), more info there
 }
 
 #[derive(Copy, Clone)]
@@ -69,6 +70,10 @@ impl Cpu {
             Register::F => { self.f },
             Register::H => { self.h },
             Register::L => { self.l },
+            Register::HL => {  // instead of getting the HL register we get the value in memory at address stored in HL
+                let address = self.get_register_pair(RegisterPair::HL);
+                self.read_ram(address)
+            }
         }
     }
 
@@ -82,6 +87,10 @@ impl Cpu {
             Register::F => { self.f = value & 0xF0},
             Register::H => { self.h = value },
             Register::L => { self.l = value },
+            Register::HL => { // instead of setting the HL register we set the value in memory at address stored in HL
+                let address = self.get_register_pair(RegisterPair::HL);
+                self.write_ram(address, value)
+            }
         }
     }
 
@@ -201,4 +210,5 @@ impl Cpu {
         self.set_flag(Flag::Z, incremented == 0);
         self.set_flag(Flag::H, set_h);
     }
+
 }
