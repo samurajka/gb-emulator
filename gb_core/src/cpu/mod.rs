@@ -180,4 +180,25 @@ impl Cpu {
         self.set_register_pair(rp, incremented);
     }
 
+    pub fn decrement_register(&mut self, r: Register) {
+        let value = self.get_register(r);
+        let decremented = value.wrapping_sub(1);
+        let set_h = check_h_borrow_u8(value, 1);
+
+        self.set_register(r, decremented);
+        self.set_flag(Flag::N, true);
+        self.set_flag(Flag::Z, decremented == 0);
+        self.set_flag(Flag::H, set_h);
+    }
+
+    pub fn increment_register(&mut self, r: Register) {
+        let value = self.get_register(r);
+        let incremented = value.wrapping_add(1);
+        let set_h = check_h_carry_u8(value, 1);
+
+        self.set_register(r, incremented);
+        self.set_flag(Flag::N, false);
+        self.set_flag(Flag::Z, incremented == 0);
+        self.set_flag(Flag::H, set_h);
+    }
 }
