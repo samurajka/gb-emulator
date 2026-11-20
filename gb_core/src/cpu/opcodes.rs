@@ -3,10 +3,10 @@ use crate::utils::*;
 
 const OPCODES: [fn(&mut Cpu) -> u8; 256] = [
 //   00      01      02      03      04      05      06      07      08      09      0A      0B      0C      0D      0E      0F
-    nop_00, todo, todo, inc_03, inc_04, dec_05, todo, todo, todo, todo, todo, dec_0B, inc_0C, dec_0D, todo, todo, // 00
-    todo, todo, todo, inc_13, inc_14, dec_15, todo, todo, todo, todo, todo, dec_1B, inc_1C, dec_1D, todo, todo, // 10
-    todo, todo, todo, inc_23, inc_24, dec_25, todo, todo, todo, todo, todo, dec_2B, inc_2C, dec_2D, todo, todo, // 20
-    todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, // 30
+    nop_00, todo, todo, inc_03, inc_04, dec_05, todo, todo, todo, todo, todo, dec_0b, inc_0c, dec_0d, todo, todo, // 00
+    todo, todo, todo, inc_13, inc_14, dec_15, todo, todo, todo, todo, todo, dec_1b, inc_1c, dec_1d, todo, todo, // 10
+    todo, todo, todo, inc_23, inc_24, dec_25, todo, todo, todo, todo, todo, dec_2b, inc_2c, dec_2d, todo, todo, // 20
+    todo, todo, todo, inc_33, inc_34, dec_35, todo, todo, todo, todo, todo, dec_3b, inc_3c, dec_3d, todo, todo, // 30
     todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, // 40
     todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, // 50
     todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, // 60
@@ -54,19 +54,19 @@ fn dec_05(cpu: &mut Cpu) -> u8 {
 }
 
 // DEC BC
-fn dec_0B(cpu: &mut Cpu) -> u8 {
+fn dec_0b(cpu: &mut Cpu) -> u8 {
     cpu.decrement_register_pair(RegisterPair::BC);
     2
 }
 
 // INC C
-fn inc_0C(cpu: &mut Cpu) -> u8 {
+fn inc_0c(cpu: &mut Cpu) -> u8 {
     cpu.increment_register(Register::C);
     1
 }
 
 // DEC C
-fn dec_0D(cpu: &mut Cpu) -> u8 {
+fn dec_0d(cpu: &mut Cpu) -> u8 {
     cpu.decrement_register(Register::C);
     1
 }
@@ -90,19 +90,19 @@ fn dec_15(cpu: &mut Cpu) -> u8 {
 }
 
 // DEC DE
-fn dec_1B(cpu: &mut Cpu) -> u8 {
+fn dec_1b(cpu: &mut Cpu) -> u8 {
     cpu.decrement_register_pair(RegisterPair::DE);
     2
 }
 
 // INC E
-fn inc_1C(cpu: &mut Cpu) -> u8 {
+fn inc_1c(cpu: &mut Cpu) -> u8 {
     cpu.increment_register(Register::E);
     1
 }
 
 // DEC E
-fn dec_1D(cpu: &mut Cpu) -> u8 {
+fn dec_1d(cpu: &mut Cpu) -> u8 {
     cpu.decrement_register(Register::E);
     1
 }
@@ -126,19 +126,55 @@ fn dec_25(cpu: &mut Cpu) -> u8 {
 }
 
 // DEC HL
-fn dec_2B(cpu: &mut Cpu) -> u8 {
+fn dec_2b(cpu: &mut Cpu) -> u8 {
     cpu.decrement_register_pair(RegisterPair::HL);
     2
 }
 
 // INC L
-fn inc_2C(cpu: &mut Cpu) -> u8 {
+fn inc_2c(cpu: &mut Cpu) -> u8 {
     cpu.increment_register(Register::L);
     1
 }
 
 // DEC L
-fn dec_2D(cpu: &mut Cpu) -> u8 {
+fn dec_2d(cpu: &mut Cpu) -> u8 {
     cpu.decrement_register(Register::L);
+    1
+}
+
+// INC SP
+fn inc_33(cpu: &mut Cpu) -> u8 {
+    cpu.incremented_register_pair(RegisterPair::SP);
+    2
+}
+
+// INC (HL)
+fn inc_34(cpu: &mut Cpu) -> u8 {
+    cpu.increment_register(Register::HL);
+    3
+}
+
+// DEC (HL)
+fn dec_35(cpu: &mut Cpu) -> u8 {
+    cpu.decrement_register(Register::HL);
+    3
+}
+
+// DEC SP
+fn dec_3b(cpu: &mut Cpu) -> u8 {
+    cpu.decrement_register_pair(RegisterPair::SP);
+    2
+}
+
+// INC A
+fn inc_3c(cpu: &mut Cpu) -> u8 {
+    cpu.increment_register(Register::A);
+    1
+}
+
+// DEC A
+fn dec_3d(cpu: &mut Cpu) -> u8 {
+    cpu.decrement_register(Register::A);
     1
 }
