@@ -178,3 +178,58 @@ fn dec_3d(cpu: &mut Cpu) -> u8 {
     cpu.decrement_register(Register::A);
     1
 }
+
+// LD B, B  copy to itself, this instruction does nothing
+fn ld_40(_cpu: &mut Cpu) -> u8 {
+    1
+}
+
+// LD B, C
+fn ld_41(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::C);
+    cpu.set_register(Register::B, value);
+    1
+}
+
+// LD B, D
+fn ld_42(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::D);
+    cpu.set_register(Register::B, value);
+    1
+}
+
+// LD B, E
+fn ld_43(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::E);
+    cpu.set_register(Register::B, value);
+    1
+}
+
+// LD B, H
+fn ld_44(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::H);
+    cpu.set_register(Register::B, value);
+    1
+}
+
+// LD B, L
+fn ld_45(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::L);
+    cpu.set_register(Register::B, value);
+    1
+}
+
+// LD B, (HL)
+fn ld_46(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.read_ram(address);
+    cpu.set_register(Register::B, value);
+    2
+}
+
+// LD B, A
+fn ld_47(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::A);
+    cpu.set_register(Register::B, value);
+    1
+}
