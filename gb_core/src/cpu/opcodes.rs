@@ -398,3 +398,59 @@ fn ld_5f(cpu: &mut Cpu) -> u8 {
     cpu.set_register(Register::E, value);
     1
 }
+
+// LD H, B
+fn ld_60(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::B);
+    cpu.set_register(Register::H, value);
+    1
+}
+
+// LD H, C
+fn ld_61(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::C);
+    cpu.set_register(Register::H, value);
+    1
+}
+
+// LD H, D
+fn ld_62(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::D);
+    cpu.set_register(Register::H, value);
+    1
+}
+
+// LD H, E
+fn ld_63(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::E);
+    cpu.set_register(Register::H, value);
+    1
+}
+
+// LD H, H
+fn ld_64(_cpu: &mut Cpu) -> u8 {
+    1
+}
+
+// LD H, L
+fn ld_65(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::L);
+    cpu.set_register(Register::H, value);
+    1
+}
+
+// LD H, (HL)
+fn ld_66(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.read_ram(address);
+    cpu.set_register(Register::H, value);
+    2
+}
+
+// LD H, A
+fn ld_67(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::A);
+    cpu.set_register(Register::H, value);
+    1
+}
+
