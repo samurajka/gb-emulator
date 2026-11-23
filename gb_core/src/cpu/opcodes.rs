@@ -35,6 +35,21 @@ fn nop_00(_cpu: &mut Cpu) -> u8 {
     1
 }
 
+// LD BC, u16
+fn ld_01(cpu: &mut Cpu) -> u8 {
+    let value = cpu.fetch_u16();
+    cpu.set_register_pair(RegisterPair::BC, value);
+    3
+}
+
+// LD (BC), A
+fn ld_02(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::A);
+    let address = cpu.get_register_pair(RegisterPair::BC);
+    cpu.write_ram(address, value);
+    2
+}
+
 // INC BC
 fn inc_03(cpu: &mut Cpu) -> u8 {
     cpu.incremented_register_pair(RegisterPair::BC);
@@ -57,6 +72,23 @@ fn dec_05(cpu: &mut Cpu) -> u8 {
 fn ld_06(cpu: &mut Cpu) -> u8 {
     let value = cpu.fetch();
     cpu.set_register(Register::B, value);
+    2
+}
+
+// LD (u16), SP
+fn ld_08(cpu: &mut Cpu) -> u8 {
+    let address = cpu.fetch_u16();
+    let value = cpu.get_register_pair(RegisterPair::SP);
+    cpu.write_ram(address, value.low_byte());
+    cpu.write_ram(address + 1, value.high_byte());
+    5
+}
+
+// LD A, (BC)
+fn ld_0a(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::BC);
+    let value = cpu.read_ram(address);
+    cpu.set_register(Register::A, value);
     2
 }
 
@@ -85,6 +117,21 @@ fn ld_0e(cpu: &mut Cpu) -> u8 {
     2
 }
 
+// LD DE, u16
+fn ld_11(cpu: &mut Cpu) -> u8 {
+    let value = cpu.fetch_u16();
+    cpu.set_register_pair(RegisterPair::DE, value);
+    3
+}
+
+// LD (DE), A
+fn ld_12(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::DE);
+    let value = cpu.get_register(Register::A);
+    cpu.write_ram(address, value);
+    2
+}
+
 // INC DE
 fn inc_13(cpu: &mut Cpu) -> u8 {
     cpu.incremented_register_pair(RegisterPair::DE);
@@ -107,6 +154,14 @@ fn dec_15(cpu: &mut Cpu) -> u8 {
 fn ld_16(cpu: &mut Cpu) -> u8 {
     let value = cpu.fetch();
     cpu.set_register(Register::D, value);
+    2
+}
+
+// LD A, (DE)
+fn ld_1a(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::DE);
+    let value = cpu.read_ram(address);
+    cpu.set_register(Register::A, value);
     2
 }
 
@@ -135,6 +190,22 @@ fn ld_1e(cpu: &mut Cpu) -> u8 {
     2
 }
 
+// LD HL, u16
+fn ld_21(cpu: &mut Cpu) -> u8 {
+    let value = cpu.fetch_u16();
+    cpu.set_register_pair(RegisterPair::HL, value);
+    3
+}
+
+// LD (HL+), A
+fn ld_22(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.get_register(Register::A);
+    cpu.write_ram(address, value);
+    cpu.set_register_pair(RegisterPair::HL, address.wrapping_add(1));
+    2
+}
+
 // INC HL
 fn inc_23(cpu: &mut Cpu) -> u8 {
     cpu.incremented_register_pair(RegisterPair::HL);
@@ -157,6 +228,15 @@ fn dec_25(cpu: &mut Cpu) -> u8 {
 fn ld_26(cpu: &mut Cpu) -> u8 {
     let value = cpu.fetch();
     cpu.set_register(Register::H, value);
+    2
+}
+
+// LD A, (HL+)
+fn ld_2a(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.read_ram(address);
+    cpu.set_register(Register::A, value);
+    cpu.set_register_pair(RegisterPair::HL, address.wrapping_add(1));
     2
 }
 
@@ -185,6 +265,22 @@ fn ld_2e(cpu: &mut Cpu) -> u8 {
     2
 }
 
+// LD SP, u16
+fn ld_31(cpu: &mut Cpu) -> u8 {
+    let value = cpu.fetch_u16();
+    cpu.set_register_pair(RegisterPair::SP, value);
+    3
+}
+
+// LD (HL-), A
+fn ld_32(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.get_register(Register::A);
+    cpu.write_ram(address, value);
+    cpu.set_register_pair(RegisterPair::HL, address.wrapping_sub(1));
+    2
+}
+
 // INC SP
 fn inc_33(cpu: &mut Cpu) -> u8 {
     cpu.incremented_register_pair(RegisterPair::SP);
@@ -209,6 +305,15 @@ fn ld_36(cpu: &mut Cpu) -> u8 {
     let address = cpu.get_register_pair(RegisterPair::HL);
     cpu.write_ram(address, value);
     3
+}
+
+// LD A, (HL-)
+fn ld_3a(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.read_ram(address);
+    cpu.set_register(Register::A, value);
+    cpu.set_register_pair(RegisterPair::HL, address.wrapping_add(1));
+    2
 }
 
 // DEC SP
