@@ -53,6 +53,13 @@ fn dec_05(cpu: &mut Cpu) -> u8 {
     1
 }
 
+// LD B, u8
+fn ld_06(cpu: &mut Cpu) -> u8 {
+    let value = cpu.fetch();
+    cpu.set_register(Register::B, value);
+    2
+}
+
 // DEC BC
 fn dec_0b(cpu: &mut Cpu) -> u8 {
     cpu.decrement_register_pair(RegisterPair::BC);
@@ -69,6 +76,13 @@ fn inc_0c(cpu: &mut Cpu) -> u8 {
 fn dec_0d(cpu: &mut Cpu) -> u8 {
     cpu.decrement_register(Register::C);
     1
+}
+
+// LD C, u8
+fn ld_0e(cpu: &mut Cpu) -> u8 {
+    let value = cpu.fetch();
+    cpu.set_register(Register::C, value);
+    2
 }
 
 // INC DE
@@ -89,6 +103,13 @@ fn dec_15(cpu: &mut Cpu) -> u8 {
     1
 }
 
+// LD D, u8
+fn ld_16(cpu: &mut Cpu) -> u8 {
+    let value = cpu.fetch();
+    cpu.set_register(Register::D, value);
+    2
+}
+
 // DEC DE
 fn dec_1b(cpu: &mut Cpu) -> u8 {
     cpu.decrement_register_pair(RegisterPair::DE);
@@ -105,6 +126,13 @@ fn inc_1c(cpu: &mut Cpu) -> u8 {
 fn dec_1d(cpu: &mut Cpu) -> u8 {
     cpu.decrement_register(Register::E);
     1
+}
+
+// LD E, u8
+fn ld_1e(cpu: &mut Cpu) -> u8 {
+    let value = cpu.fetch();
+    cpu.set_register(Register::E, value);
+    2
 }
 
 // INC HL
@@ -125,6 +153,13 @@ fn dec_25(cpu: &mut Cpu) -> u8 {
     1
 }
 
+// LD H, u8
+fn ld_26(cpu: &mut Cpu) -> u8 {
+    let value = cpu.fetch();
+    cpu.set_register(Register::H, value);
+    2
+}
+
 // DEC HL
 fn dec_2b(cpu: &mut Cpu) -> u8 {
     cpu.decrement_register_pair(RegisterPair::HL);
@@ -141,6 +176,13 @@ fn inc_2c(cpu: &mut Cpu) -> u8 {
 fn dec_2d(cpu: &mut Cpu) -> u8 {
     cpu.decrement_register(Register::L);
     1
+}
+
+// LD L, u8
+fn ld_2e(cpu: &mut Cpu) -> u8 {
+    let value = cpu.fetch();
+    cpu.set_register(Register::L, value);
+    2
 }
 
 // INC SP
@@ -161,6 +203,14 @@ fn dec_35(cpu: &mut Cpu) -> u8 {
     3
 }
 
+// LD (HL), u8
+fn ld_36(cpu: &mut Cpu) -> u8 {
+    let value = cpu.fetch();
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    cpu.write_ram(address, value);
+    3
+}
+
 // DEC SP
 fn dec_3b(cpu: &mut Cpu) -> u8 {
     cpu.decrement_register_pair(RegisterPair::SP);
@@ -177,6 +227,13 @@ fn inc_3c(cpu: &mut Cpu) -> u8 {
 fn dec_3d(cpu: &mut Cpu) -> u8 {
     cpu.decrement_register(Register::A);
     1
+}
+
+// LD A, u8
+fn ld_3e(cpu: &mut Cpu) -> u8 {
+    let value = cpu.fetch();
+    cpu.set_register(Register::A, value);
+    2
 }
 
 // LD B, B  copy to itself, this instruction does nothing
