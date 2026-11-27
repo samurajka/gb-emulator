@@ -2,15 +2,15 @@ use crate::cpu::*;
 use crate::utils::*;
 
 const OPCODES: [fn(&mut Cpu) -> u8; 256] = [
-//   00      01      02      03      04      05      06      07      08      09      0A      0B      0C      0D      0E      0F
-    nop_00, todo, todo, inc_03, inc_04, dec_05, todo, todo, todo, todo, todo, dec_0b, inc_0c, dec_0d, todo, todo, // 00
-    todo, todo, todo, inc_13, inc_14, dec_15, todo, todo, todo, todo, todo, dec_1b, inc_1c, dec_1d, todo, todo, // 10
-    todo, todo, todo, inc_23, inc_24, dec_25, todo, todo, todo, todo, todo, dec_2b, inc_2c, dec_2d, todo, todo, // 20
-    todo, todo, todo, inc_33, inc_34, dec_35, todo, todo, todo, todo, todo, dec_3b, inc_3c, dec_3d, todo, todo, // 30
-    todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, // 40
-    todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, // 50
-    todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, // 60
-    todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, // 70
+//   00      01      02      03      04      05      06    07     08     09    0A     0B      0C      0D     0E     0F
+    nop_00, ld_01, ld_02, inc_03, inc_04, dec_05, ld_06, todo, ld_08, todo, ld_0a, dec_0b, inc_0c, dec_0d, ld_0e, todo, // 00
+    todo, ld_11, ld_12, inc_13, inc_14, dec_15, ld_16, todo, todo, todo, ld_1a, dec_1b, inc_1c, dec_1d, ld_1e, todo, // 10
+    todo, ld_21, ld_22, inc_23, inc_24, dec_25, ld_26, todo, todo, todo, ld_2a, dec_2b, inc_2c, dec_2d, ld_2e, todo, // 20
+    todo, ld_31, ld_32, inc_33, inc_34, dec_35, ld_36, todo, todo, todo, ld_3a, dec_3b, inc_3c, dec_3d, ld_3e, todo, // 30
+    ld_40, ld_41, ld_42, ld_43, ld_44, ld_45, ld_46, ld_47, ld_48, ld_49, ld_4a, ld_4b, ld_4c, ld_4d, ld_4e, ld_4f, // 40
+    ld_50, ld_51, ld_52, ld_53, ld_54, ld_55, ld_56, ld_57, ld_58, ld_59, ld_5a, ld_5b, ld_5c, ld_5d, ld_5e, ld_5f, // 50
+    ld_60, ld_61, ld_62, ld_63, ld_64, ld_65, ld_66, ld_67, ld_68, ld_69, ld_6a, ld_6b, ld_6c, ld_6d, ld_6e, ld_6f, // 60
+    ld_70, ld_71, ld_72, ld_73, ld_74, ld_75, todo, ld_77, ld_78, ld_79, ld_7a, ld_7b, ld_7c, ld_7d, ld_7e, ld_7f, // 70
     todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, // 80
     todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, // 90
     todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, // A0
@@ -466,7 +466,7 @@ fn ld_51(cpu: &mut Cpu) -> u8 {
 }
 
 // LD D, D
-fn ld_52(cpu: &mut Cpu) -> u8 {
+fn ld_52(_cpu: &mut Cpu) -> u8 {
     1
 }
 
@@ -528,7 +528,7 @@ fn ld_5a(cpu: &mut Cpu) -> u8 {
 }
 
 // LD E, E
-fn ld_5b(cpu: &mut Cpu) -> u8 {
+fn ld_5b(_cpu: &mut Cpu) -> u8 {
     1
 }
 
@@ -652,7 +652,7 @@ fn ld_6c(cpu: &mut Cpu) -> u8 {
 }
 
 // LD L, L
-fn ld_6d(cpu: &mut Cpu) -> u8 {
+fn ld_6d(_cpu: &mut Cpu) -> u8 {
     1
 }
 
@@ -668,5 +668,116 @@ fn ld_6e(cpu: &mut Cpu) -> u8 {
 fn ld_6f(cpu: &mut Cpu) -> u8 {
     let value = cpu.get_register(Register::A);
     cpu.set_register(Register::L, value);
+    1
+}
+
+// LD (HL), B
+fn ld_70(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.get_register(Register::B);
+    cpu.write_ram(address, value);
+    2
+}
+
+// LD (HL), C
+fn ld_71(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.get_register(Register::C);
+    cpu.write_ram(address, value);
+    2
+}
+
+// LD (HL), D
+fn ld_72(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.get_register(Register::D);
+    cpu.write_ram(address, value);
+    2
+}
+
+// LD (HL), E
+fn ld_73(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.get_register(Register::E);
+    cpu.write_ram(address, value);
+    2
+}
+
+// LD (HL), H
+fn ld_74(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.get_register(Register::H);
+    cpu.write_ram(address, value);
+    2
+}
+
+// LD (HL), L
+fn ld_75(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.get_register(Register::L);
+    cpu.write_ram(address, value);
+    2
+}
+
+// LD (HL), A
+fn ld_77(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.get_register(Register::A);
+    cpu.write_ram(address, value);
+    2
+}
+
+// LD A, B
+fn ld_78(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::B);
+    cpu.set_register(Register::A, value);
+    1
+}
+
+// LD A, C
+fn ld_79(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::C);
+    cpu.set_register(Register::A, value);
+    1
+}
+
+// LD A, D
+fn ld_7a(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::D);
+    cpu.set_register(Register::A, value);
+    1
+}
+
+// LD A, E
+fn ld_7b(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::E);
+    cpu.set_register(Register::A, value);
+    1
+}
+
+// LD A, H
+fn ld_7c(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::H);
+    cpu.set_register(Register::A, value);
+    1
+}
+
+// LD A, L
+fn ld_7d(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::L);
+    cpu.set_register(Register::A, value);
+    1
+}
+
+// LD A, (HL)
+fn ld_7e(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.read_ram(address);
+    cpu.set_register(Register::A, value);
+    2
+}
+
+// LD A, A
+fn ld_7f(_cpu: &mut Cpu) -> u8 {
     1
 }
