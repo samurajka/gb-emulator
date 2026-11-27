@@ -17,8 +17,8 @@ const OPCODES: [fn(&mut Cpu) -> u8; 256] = [
     todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, // B0
     todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, // C0
     todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, // D0
-    todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, // E0
-    todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, // F0
+    ld_e0, todo, ld_e2, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, todo, // E0
+    ld_f0, todo, ld_f2, todo, todo, todo, todo, todo, ld_f8, ld_f9, ld_fa, todo, todo, todo, todo, todo, // F0
 ];
 
 fn todo(cpu: &mut Cpu) -> u8 {
@@ -780,4 +780,78 @@ fn ld_7e(cpu: &mut Cpu) -> u8 {
 // LD A, A
 fn ld_7f(_cpu: &mut Cpu) -> u8 {
     1
+}
+
+// LD (FF00+u8), A
+fn ld_e0(cpu: &mut Cpu) -> u8 {
+    let offset = cpu.fetch() as u16;
+    let address = 0xFF00 + offset;
+    let value = cpu.get_register(Register::A);
+    cpu.write_ram(address, value);
+    3
+}
+
+// LD (FF00+C), A
+fn ld_e2(cpu: &mut Cpu) -> u8 {
+    let offset = cpu.get_register(Register::C) as u16;
+    let address = 0xFF00 + offset;
+    let value = cpu.get_register(Register::A);
+    cpu.write_ram(address, value);
+    2
+}
+
+// LD (u16), A
+fn ld_ea(cpu: &mut Cpu) -> u8 {
+    let address = cpu.fetch_u16();
+    let value = cpu.get_register(Register::A);
+    cpu.write_ram(address, value);
+    4
+}
+
+// LD A, (FF00+u8)
+fn ld_f0(cpu: &mut Cpu) -> u8 {
+    let offset = cpu.fetch() as u16;
+    let address = 0xFF00 + offset;
+    let value = cpu.read_ram(address);
+    cpu.set_register(Register::A, value);
+    3
+}
+
+// LD A, (FF00+C)
+fn ld_f2(cpu: &mut Cpu) -> u8 {
+    let offset = cpu.get_register(Register::C) as u16;
+    let address = 0xFF00 + offset;
+    let value = cpu.read_ram(address);
+    cpu.set_register(Register::A, value);
+    2
+}
+
+// LD HL, SP+i8
+fn ld_f8(cpu: &mut Cpu) -> u8 {
+    let offset = cpu.fetch() as i8 as i16 as u16;
+    let sp = cpu.get_register_pair(RegisterPair::SP);
+    let set_c = check_c_carry_u8(sp.low_byte(), offset.low_byte());
+    let set_h = check_h_carry_u8(sp.low_byte(), offset.low_byte());
+
+    cpu.set_register_pair(RegisterPair::HL, offset.wrapping_add(sp));
+    cpu.set_flag(Flag::Z, false);
+    cpu.set_flag(Flag::N, false);
+    cpu.set_flag(Flag::C, set_c);
+    cpu.set_flag(Flag::H, set_h);
+    3
+}
+
+// LD SP, HL
+fn ld_f9(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register_pair(RegisterPair::HL);
+    cpu.set_register_pair(RegisterPair::SP, value);
+    2
+}
+
+// LD A, (u16)
+fn ld_fa(cpu: &mut Cpu) -> u8 {
+    let address = cpu.fetch_u16();
+    let value = cpu.read_ram(address);
+    cpu.set_register(Register::A, value);
+    4
 }
