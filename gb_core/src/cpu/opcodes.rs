@@ -806,6 +806,12 @@ fn ld_7f(_cpu: &mut Cpu) -> u8 {
     1
 }
 
+// ADD A, B
+fn add_80(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::B);
+    cpu.a
+}
+
 // LD (FF00+u8), A
 fn ld_e0(cpu: &mut Cpu) -> u8 {
     let offset = cpu.fetch() as u16;

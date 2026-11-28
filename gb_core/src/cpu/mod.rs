@@ -211,7 +211,18 @@ impl Cpu {
         self.set_flag(Flag::H, set_h);
     }
 
-    pub fn a_and_u8(&mut self, value: u8, adc: bool) {
+    pub fn a_and_u8(&mut self, value: u8) {
+        let mut a = self.get_register(Register::A);
+        a &= value;
+
+        self.set_register(Register::A, a);
+        self.set_flag(Flag::Z, a == 0);
+        self.set_flag(Flag::N, false);
+        self.set_flag(Flag::H, true);
+        self.set_flag(Flag::C, false);
+    }
+
+    pub fn a_add_u8(&mut self, value: u8, adc: bool) {
         let mut carry = 0;
         if adc && self.get_flag(Flag::C) {
             carry = 1;
