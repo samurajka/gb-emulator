@@ -809,7 +809,58 @@ fn ld_7f(_cpu: &mut Cpu) -> u8 {
 // ADD A, B
 fn add_80(cpu: &mut Cpu) -> u8 {
     let value = cpu.get_register(Register::B);
-    cpu.a
+    cpu.a_add_u8(value, false);
+    1
+}
+
+// ADD A, C
+fn add_81(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::C);
+    cpu.a_add_u8(value, false);
+    1
+}
+
+// ADD A, D
+fn add_82(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::D);
+    cpu.a_add_u8(value, false);
+    1
+}
+
+// ADD A, E
+fn add_83(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::E);
+    cpu.a_add_u8(value, false);
+    1
+}
+
+// ADD A, H
+fn add_84(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::H);
+    cpu.a_add_u8(value, false);
+    1
+}
+
+// ADD A, L 
+fn add_85(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::L);
+    cpu.a_add_u8(value, false);
+    1
+}
+
+// ADD A, (HL)
+fn add_86(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.read_ram(address);
+    cpu.a_add_u8(value, false);
+    2
+}
+
+// ADD A, A
+fn add_87(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::A);
+    cpu.a_add_u8(value, false);
+    1
 }
 
 // LD (FF00+u8), A
