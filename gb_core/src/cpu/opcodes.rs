@@ -977,6 +977,63 @@ fn sub_97(cpu: &mut Cpu) -> u8 {
     1
 }
 
+// SBC A, B
+fn sbc_98(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::B);
+    cpu.a_sub_u8(value, true);
+    1
+}
+
+// SBC A, C
+fn sbc_99(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::C);
+    cpu.a_sub_u8(value, true);
+    1
+}
+
+// SBC A, D
+fn sbc_9a(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::D);
+    cpu.a_sub_u8(value, true);
+    1
+}
+
+// SBC A, E
+fn sbc_9b(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::E);
+    cpu.a_sub_u8(value, true);
+    1
+}
+
+// SBC A, H
+fn sbc_9c(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::H);
+    cpu.a_sub_u8(value, true);
+    1
+}
+
+// SBC A, L
+fn sbc_9d(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::L);
+    cpu.a_sub_u8(value,true);
+    1
+}
+
+// SBC A, (HL)
+fn sbc_9e(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.read_ram(address);
+    cpu.a_sub_u8(value, true);
+    2
+}
+
+// SBC A, A
+fn sbc_9f(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::A);
+    cpu.a_sub_u8(value, true);
+    1
+}
+
 // LD (FF00+u8), A
 fn ld_e0(cpu: &mut Cpu) -> u8 {
     let offset = cpu.fetch() as u16;
