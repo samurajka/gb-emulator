@@ -261,4 +261,16 @@ impl Cpu {
         self.set_flag(Flag::H, set_h);
         self.set_flag(Flag::C, a < value);
     }
+
+    pub fn r16_add_r16(&mut self, destination: RegisterPair, source: RegisterPair) {
+        let dst_value = self.get_register_pair(destination);
+        let src_value = self.get_register_pair(source);
+        let result = dst_value.overflowing_add(src_value);
+        let set_h = check_h_carry_u16(dst_value, src_value);
+
+        self.set_register_pair(destination, result.0);
+        self.set_flag(Flag::N, false);
+        self.set_flag(Flag::H, set_h);
+        self.set_flag(Flag::C, result.1);
+    }
 }
