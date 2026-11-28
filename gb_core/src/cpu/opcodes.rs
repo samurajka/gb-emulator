@@ -1034,6 +1034,63 @@ fn sbc_9f(cpu: &mut Cpu) -> u8 {
     1
 }
 
+// AND A, B
+fn and_a0(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::B);
+    cpu.a_and_u8(value);
+    1
+}
+
+// AND A, C
+fn and_a1(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::C);
+    cpu.a_and_u8(value);
+    1
+}
+
+// AND A, D
+fn and_a2(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::D);
+    cpu.a_and_u8(value);
+    1
+}
+
+// AND A, E
+fn and_a3(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::E);
+    cpu.a_and_u8(value);
+    1
+}
+
+// AND A, H
+fn and_a4(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::H);
+    cpu.a_and_u8(value);
+    1
+}
+
+// AND A, L
+fn and_a5(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::L);
+    cpu.a_and_u8(value);
+    1
+}
+
+// AND A, (HL)
+fn and_a6(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.read_ram(address);
+    cpu.a_and_u8(value);
+    2
+}
+
+// AND A, A
+fn and_a7(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::A);
+    cpu.a_and_u8(value);
+    1
+}
+
 // LD (FF00+u8), A
 fn ld_e0(cpu: &mut Cpu) -> u8 {
     let offset = cpu.fetch() as u16;
