@@ -1091,6 +1091,63 @@ fn and_a7(cpu: &mut Cpu) -> u8 {
     1
 }
 
+// XOR A, B
+fn xor_a8(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::B);
+    cpu.a_xor_u8(value);
+    1
+}
+
+// XOR A, C
+fn xor_a9(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::C);
+    cpu.a_xor_u8(value);
+    1
+}
+
+// XOR A, D
+fn xor_aa(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::D);
+    cpu.a_xor_u8(value);
+    1
+}
+
+// XOR A, E
+fn xor_ab(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::E);
+    cpu.a_xor_u8(value);
+    1
+}
+
+// XOR A, H
+fn xor_ac(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::H);
+    cpu.a_xor_u8(value);
+    1
+}
+
+// XOR A, L
+fn xor_ad(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::L);
+    cpu.a_xor_u8(value);
+    1
+}
+
+// XOR A, (HL)
+fn xor_ae(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.read_ram(address);
+    cpu.a_xor_u8(value);
+    2
+}
+
+// XOR A, A
+fn xor_af(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::A);
+    cpu.a_xor_u8(value);
+    1
+}
+
 // LD (FF00+u8), A
 fn ld_e0(cpu: &mut Cpu) -> u8 {
     let offset = cpu.fetch() as u16;
