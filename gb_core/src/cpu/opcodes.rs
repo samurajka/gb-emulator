@@ -863,6 +863,63 @@ fn add_87(cpu: &mut Cpu) -> u8 {
     1
 }
 
+// ADC A, B
+fn adc_88(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::B);
+    cpu.a_add_u8(value, true);
+    1
+}
+
+// ADC A, C
+fn adc_89(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::C);
+    cpu.a_add_u8(value, true);
+    1
+}
+
+// ADC A, D
+fn adc_8a(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::D);
+    cpu.a_add_u8(value, true);
+    1
+}
+
+// ADC A, E
+fn adc_8b(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::E);
+    cpu.a_add_u8(value, true);
+    1
+}
+
+// ADC A, H
+fn adc_8c(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::H);
+    cpu.a_add_u8(value, true);
+    1
+}
+
+// ADC A, L
+fn adc_8d(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::L);
+    cpu.a_add_u8(value, true);
+    1
+}
+
+// ADC A, (HL)
+fn adc_8e(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.read_ram(address);
+    cpu.a_add_u8(value, true);
+    2
+}
+
+// ADC A, A
+fn adc_8f(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::A);
+    cpu.a_add_u8(value, true);
+    1
+}
+
 // LD (FF00+u8), A
 fn ld_e0(cpu: &mut Cpu) -> u8 {
     let offset = cpu.fetch() as u16;
