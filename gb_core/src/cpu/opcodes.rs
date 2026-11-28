@@ -920,6 +920,63 @@ fn adc_8f(cpu: &mut Cpu) -> u8 {
     1
 }
 
+// SUB A, B
+fn sub_90(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::B);
+    cpu.a_sub_u8(value, false);
+    1
+}
+
+// SUB A, C
+fn sub_91(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::C);
+    cpu.a_sub_u8(value, false);
+    1
+}
+
+// SUB A, D
+fn sub_92(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::D);
+    cpu.a_sub_u8(value, false);
+    1
+}
+
+// SUB A, E
+fn sub_93(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::E);
+    cpu.a_sub_u8(value, false);
+    1
+}
+
+// SUB A, H
+fn sub_94(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::H);
+    cpu.a_sub_u8(value, false);
+    1
+}
+
+// SUB A, L
+fn sub_95(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::L);
+    cpu.a_sub_u8(value, false);
+    1
+}
+
+// SUB A, (HL)
+fn sub_96(cpu: &mut Cpu) -> u8 {
+    let address = cpu.get_register_pair(RegisterPair::HL);
+    let value = cpu.read_ram(address);
+    cpu.a_sub_u8(value, false);
+    2
+}
+
+// SUB A, A
+fn sub_97(cpu: &mut Cpu) -> u8 {
+    let value = cpu.get_register(Register::A);
+    cpu.a_sub_u8(value, false);
+    1
+}
+
 // LD (FF00+u8), A
 fn ld_e0(cpu: &mut Cpu) -> u8 {
     let offset = cpu.fetch() as u16;
