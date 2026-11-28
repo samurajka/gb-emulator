@@ -211,4 +211,54 @@ impl Cpu {
         self.set_flag(Flag::H, set_h);
     }
 
+    pub fn a_and_u8(&mut self, value: u8, adc: bool) {
+        let mut carry = 0;
+        if adc && self.get_flag(Flag::C) {
+            carry = 1;
+        }
+
+        let a = self.get_register(Register::A);
+        let result1 = a.overflowing_add(value);
+        let h_check1 = check_h_carry_u8(a, value);
+        let result2 = result1.0.overflowing_add(carry);
+        let h_check2 = check_h_carry_u8(result1.0, carry);
+        let set_h = h_check1 || h_check2;
+        let set_c = result1.1 || result2.1;
+
+        self.set_register(Register::A, result2.0);
+        self.set_flag(Flag::Z, result2.0 == 0);
+        self.set_flag(Flag::N, false);
+        self.set_flag(Flag::H, set_h);
+        self.set_flag(Flag::C, set_c);
+    }
+
+    pub fn a_sub_u8(&mut self, value: u8, sbc: bool) {
+        let mut carry = 0;
+        if sbc && self.get_flag(Flag::C) {
+            carry = 1;
+        }
+
+        let a = self.get_register(Register::A);
+        let result1 = a.overflowing_sub(value);
+        let h_check1 = check_h_borrow_u8(a, value);
+        let result2 = result1.0.overflowing_sub(carry);
+        let h_check2 = check_h_borrow_u8(result1.0, carry);
+        let set_h = h_check1 || h_check2;
+
+        self.set_register(Register::A, result2.0);
+        self.set_flag(Flag::Z, result2.0 == 0);
+        self.set_flag(Flag::N, true);
+        self.set_flag(Flag::H, set_h);
+        self.set_flag(Flag::C, result1.1 || result2.1);
+    }
+
+    pub fn a_cp_u8(&mut self, value: u8) {
+        let a = self.get_register(Register::A);
+        let set_h = check_h_borrow_u8(a, value);
+
+        self.set_flag(Flag::Z, a == value);
+        self.set_flag(Flag::N, true);
+        self.set_flag(Flag::H, set_h);
+        self.set_flag(Flag::C, a < value);
+    }
 }
