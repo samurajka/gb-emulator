@@ -84,6 +84,12 @@ fn ld_08(cpu: &mut Cpu) -> u8 {
     5
 }
 
+// ADD HL, BC
+fn add_09(cpu: &mut Cpu) -> u8 {
+    cpu.r16_add_r16(RegisterPair::HL, RegisterPair::BC);
+    2
+}
+
 // LD A, (BC)
 fn ld_0a(cpu: &mut Cpu) -> u8 {
     let address = cpu.get_register_pair(RegisterPair::BC);
@@ -154,6 +160,12 @@ fn dec_15(cpu: &mut Cpu) -> u8 {
 fn ld_16(cpu: &mut Cpu) -> u8 {
     let value = cpu.fetch();
     cpu.set_register(Register::D, value);
+    2
+}
+
+// LD HL, DE
+fn add_19(cpu: &mut Cpu) -> u8 {
+    cpu.r16_add_r16(RegisterPair::HL, RegisterPair::DE);
     2
 }
 
@@ -231,6 +243,12 @@ fn ld_26(cpu: &mut Cpu) -> u8 {
     2
 }
 
+// ADD HL, HL
+fn add_29(cpu: &mut Cpu) -> u8 {
+    cpu.r16_add_r16(RegisterPair::HL, RegisterPair::HL);
+    2
+}
+
 // LD A, (HL+)
 fn ld_2a(cpu: &mut Cpu) -> u8 {
     let address = cpu.get_register_pair(RegisterPair::HL);
@@ -305,6 +323,12 @@ fn ld_36(cpu: &mut Cpu) -> u8 {
     let address = cpu.get_register_pair(RegisterPair::HL);
     cpu.write_ram(address, value);
     3
+}
+
+// ADD HL, SP
+fn add_39(cpu: &mut Cpu) -> u8 {
+    cpu.r16_add_r16(RegisterPair::HL, RegisterPair::SP);
+    2
 }
 
 // LD A, (HL-)
